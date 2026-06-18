@@ -81,7 +81,6 @@ FAQ_DATABASE = [
 corpus = [f"{item['question']} {item['tags']}" for item in FAQ_DATABASE]
 answers = [item['answer'] for item in FAQ_DATABASE]
 
-# Removed @st.cache_resource to fix exact matching issues (prevents stale vector index mismatches)
 def build_nlp_model():
     vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 2))
     faq_vectors = vectorizer.fit_transform(corpus)
@@ -136,7 +135,7 @@ footer {visibility: hidden;}
 .stDeployButton {display:none;}
 html, body, [class*="css"] { font-family: 'Google Sans', sans-serif !important; }
 
-/* Bot Bubbles (Shifted 30cm/800px Left from normal center) */
+/* Bot Bubbles */
 .bot-container { display: flex; justify-content: flex-start; width: 100%; margin: 15px 0 35px 0; padding-left: 80px; flex-direction: column; position: relative; box-sizing: border-box;}
 .bot-text { color: #1f1f1f; font-size: 15px; line-height: 1.6; max-width: 85%; }
 
@@ -145,7 +144,7 @@ html, body, [class*="css"] { font-family: 'Google Sans', sans-serif !important; 
 .bot-actions .action-btn { font-size: 18px; cursor: pointer; padding: 8px; border-radius: 50%; transition: 0.2s; user-select: none; }
 .bot-actions .action-btn:hover { background: #f0f4f9; color: #1f1f1f; }
 
-/* User Bubbles (Shifted 3cm/80px Right from normal center) */
+/* User Bubbles */
 .user-container { display: flex; flex-direction: column; align-items: flex-end; width: 100%; margin: 25px 0 10px 0; padding-right: 80px; box-sizing: border-box;}
 .user-bubble { background-color: #f0f4f9; color: #1f1f1f; padding: 12px 24px; border-radius: 24px; max-width: 60%; font-size: 15px; line-height: 1.5; margin-bottom: 4px;}
 
@@ -154,7 +153,7 @@ html, body, [class*="css"] { font-family: 'Google Sans', sans-serif !important; 
 .user-actions .action-btn { font-size: 16px; cursor: pointer; padding: 6px; border-radius: 50%; transition: 0.2s; user-select: none; }
 .user-actions .action-btn:hover { background: #f0f4f9; color: #1f1f1f; }
 
-/* The Input Box Customization (Wider and permanently colorful) */
+/* The Input Box Customization */
 div[data-testid="stChatInput"] {
     border-radius: 32px !important; max-width: 1000px !important; margin: 0 auto !important;
     padding-left: 20px !important; padding-right: 60px !important; transition: all 0.3s ease;
@@ -163,13 +162,11 @@ div[data-testid="stChatInput"] {
     background-image: linear-gradient(white, white), linear-gradient(90deg, #4285f4, #ea4335, #fbbc05, #34a853) !important;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.05) !important;
 }
-/* Ensure the border stays colorful on focus */
 div[data-testid="stChatInput"]:focus-within {
     background-image: linear-gradient(white, white), linear-gradient(90deg, #4285f4, #ea4335, #fbbc05, #34a853) !important;
     box-shadow: 0 1px 10px rgba(32,33,36,.28) !important;
 }
 
-/* Kill default borders inside input */
 div[data-testid="stChatInput"] > div, div[data-testid="stChatInput"] > div:focus-within,
 div[data-testid="stChatInput"] div[data-baseweb="textarea"], div[data-testid="stChatInput"] div[data-baseweb="textarea"]:focus-within,
 div[data-testid="stChatInput"] textarea, div[data-testid="stChatInput"] textarea:focus {
@@ -177,12 +174,10 @@ div[data-testid="stChatInput"] textarea, div[data-testid="stChatInput"] textarea
 }
 div[data-testid="stChatInput"] textarea { color: #1f1f1f !important; font-size: 16px !important; padding: 0 !important; width: 100% !important;}
 
-/* Disclaimer */
 div[data-testid="stChatInputContainer"]::after {
     content: "CodeAlpha FAQ Assistant is AI and can make mistakes."; display: block; text-align: center; font-size: 12px; color: #5f6368; padding-top: 15px; font-family: 'Google Sans', sans-serif;
 }
 
-/* Microphone Animation */
 @keyframes pulseMic {
     0% { background-color: transparent; transform: translateY(-50%) scale(1); }
     50% { background-color: #fbbc05; transform: translateY(-50%) scale(1.1); box-shadow: 0 0 10px rgba(251, 188, 5, 0.5); }
@@ -224,23 +219,23 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
         if (!document.getElementById('codealpha-global-css')) {
             const style = document.createElement('style');
             style.id = 'codealpha-global-css';
-            style.innerHTML = \\`
+            style.innerHTML = \`
                 .codealpha-toast { position: fixed; bottom: -100px; left: 24px; background: #1f1f1f; padding: 14px 24px; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.2); z-index: 200000; font-family: 'Google Sans', sans-serif; font-size: 14px; color: white; display: flex; align-items: center; gap: 12px; transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none;}
                 .codealpha-toast.show { bottom: 40px; }
                 .feedback-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 200000; align-items: center; justify-content: center; }
                 .feedback-modal { background: white; border-radius: 16px; padding: 24px; width: 450px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); font-family: 'Google Sans', sans-serif; }
                 .feedback-option { padding: 12px 16px; margin-bottom: 8px; background: #f0f4f9; border-radius: 8px; cursor: pointer; color: #1f1f1f; font-size: 14px; transition: 0.2s;}
                 .feedback-option:hover { background: #e8eaed; }
-                .redo-dropdown { position: absolute; top: 100%; left: 0; background: white; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); padding: 8px 0; z-index: 100000; min-width: 200px; margin-top: 4px; font-family: 'Google Sans', sans-serif; }
+                .redo-dropdown { position: absolute; top: 100%; left: 0; background: white; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); padding: 8px 0; z-index: 999999 !important; min-width: 200px; margin-top: 4px; font-family: 'Google Sans', sans-serif; }
                 .redo-item { padding: 10px 16px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 12px; color: #1f1f1f; transition: 0.2s;}
                 .redo-item:hover { background: #f0f4f9; }
-            \\`;
+            \`;
             document.head.appendChild(style);
             
             const overlay = document.createElement('div');
             overlay.id = 'codealpha-feedback-modal';
             overlay.className = 'feedback-modal-overlay';
-            overlay.innerHTML = \\`
+            overlay.innerHTML = \`
                 <div class="feedback-modal">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                         <h3 style="margin:0; font-size:20px; font-weight: 400;">What went wrong?</h3>
@@ -253,13 +248,13 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
                     <div class="feedback-option">Personalization issue</div>
                     <div class="feedback-option">Other</div>
                 </div>
-            \\`;
+            \`;
             document.body.appendChild(overlay);
 
             const toast = document.createElement('div');
             toast.id = 'codealpha-global-toast';
             toast.className = 'codealpha-toast';
-            toast.innerHTML = \\`<span id="ca-toast-msg-text"></span>\\`;
+            toast.innerHTML = '<span id="ca-toast-msg-text"></span>';
             document.body.appendChild(toast);
         }
 
@@ -317,57 +312,54 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
             if (e.target.closest('.action-refresh')) {
                 const btnRefresh = e.target.closest('.action-refresh');
                 document.querySelectorAll('.redo-dropdown').forEach(el => el.remove()); 
+                document.querySelectorAll('.bot-actions').forEach(el => el.style.zIndex = '1'); 
+                btnRefresh.closest('.bot-actions').style.zIndex = '9999';
                 
                 const menu = document.createElement('div');
                 menu.className = 'redo-dropdown';
-                menu.innerHTML = \\`
+                menu.innerHTML = \`
                     <div class="redo-item" data-action="Longer"><span class="material-symbols-outlined" style="font-size:18px;">format_align_left</span> Longer</div>
                     <div class="redo-item" data-action="Shorter"><span class="material-symbols-outlined" style="font-size:18px;">short_text</span> Shorter</div>
                     <div class="redo-item" data-action="Personalize"><span class="material-symbols-outlined" style="font-size:18px;">person</span> Personalize</div>
                     <div class="redo-item" data-action="Try again"><span class="material-symbols-outlined" style="font-size:18px;">refresh</span> Try again</div>
-                \\`;
+                \`;
                 btnRefresh.parentElement.appendChild(menu);
                 return;
             }
 
-            // TEXT TO SPEECH (INDIAN MALE VOICE)
-            if (e.target.closest('.action-listen')) {
-                const btnListen = e.target.closest('.action-listen');
+            if (e.target.closest('.redo-item')) {
+                e.preventDefault();
+                const item = e.target.closest('.redo-item');
+                const action = item.getAttribute('data-action');
+                const container = item.closest('.bot-container');
+                const textSpan = container.querySelector('.actual-bot-text');
                 
-                // Stop current speech if already speaking
-                if (window.speechSynthesis.speaking) {
-                    window.speechSynthesis.cancel();
-                    btnListen.style.color = '#444746';
-                    return;
+                document.querySelectorAll('.redo-dropdown').forEach(el => el.remove());
+                document.querySelectorAll('.bot-actions').forEach(el => el.style.zIndex = '1');
+                
+                if(!textSpan) return;
+
+                let originalText = textSpan.getAttribute('data-original');
+                if(!originalText) {
+                    originalText = textSpan.innerText;
+                    textSpan.setAttribute('data-original', originalText);
                 }
                 
-                // Grab the text from the bot bubble
-                const text = btnListen.closest('.bot-container').querySelector('.actual-bot-text').innerText;
-                const utterance = new window.SpeechSynthesisUtterance(text);
+                textSpan.innerText = "✨ Generating variation...";
+                textSpan.style.opacity = "0.5";
                 
-                // Fetch available system voices
-                let voices = window.speechSynthesis.getVoices();
-                
-                // Search specifically for an Indian Male voice
-                let aiVoice = voices.find(v => (v.name.includes('India') || v.lang.includes('IN') || v.lang.includes('hi-IN')) && (v.name.toLowerCase().includes('male') || v.name.includes('Ravi') || v.name.includes('Rishi')));
-                
-                // Fallbacks if no specific Indian male voice is found locally
-                if(!aiVoice) aiVoice = voices.find(v => v.name.toLowerCase().includes('male'));
-                if(!aiVoice && voices.length > 0) aiVoice = voices[0];
-                
-                // Apply the selected voice to the utterance
-                if(aiVoice) utterance.voice = aiVoice;
-                
-                // Set standard male pitch and normal conversational pacing
-                utterance.pitch = 1.0; 
-                utterance.rate = 0.9;  
-                
-                // Change icon color to blue while playing, reset to grey on end
-                btnListen.style.color = '#1a73e8';
-                utterance.onend = () => { btnListen.style.color = '#444746'; };
-                
-                // Execute the speech
-                window.speechSynthesis.speak(utterance);
+                setTimeout(() => {
+                    textSpan.style.opacity = "1";
+                    if(action === 'Longer') {
+                        textSpan.innerText = originalText + " Furthermore, our AI platform is designed to scale effortlessly, ensuring that all operations remain highly optimized and secure.";
+                    } else if(action === 'Shorter') {
+                        textSpan.innerText = originalText.split('.')[0] + ".";
+                    } else if(action === 'Personalize') {
+                        textSpan.innerText = "Hey Yogesh! " + originalText;
+                    } else if(action === 'Try again') {
+                        textSpan.innerText = "Let me rephrase that: " + originalText;
+                    }
+                }, 600);
                 return;
             }
 
@@ -378,8 +370,8 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
                 window.codeAlphaTriggerToast("Copied to clipboard");
                 return;
             }
-            
-            // TEXT TO SPEECH (INDIAN FEMALE MELODIOUS)
+
+            // TEXT TO SPEECH (INDIAN MALE VOICE)
             if (e.target.closest('.action-listen')) {
                 const btnListen = e.target.closest('.action-listen');
                 if (window.speechSynthesis.speaking) {
@@ -392,15 +384,13 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
                 const utterance = new window.SpeechSynthesisUtterance(text);
                 
                 let voices = window.speechSynthesis.getVoices();
-                // Find Indian Female Voices
-                let aiVoice = voices.find(v => (v.name.includes('India') || v.lang.includes('IN')) && (v.name.toLowerCase().includes('female') || v.name.includes('Neerja') || v.name.includes('Aarti')));
-                if(!aiVoice) aiVoice = voices.find(v => v.name.includes('Google हिन्दी'));
-                if(!aiVoice) aiVoice = voices.find(v => v.lang.includes('en-IN') || v.lang.includes('hi-IN'));
-                if(!aiVoice) aiVoice = voices.find(v => v.name.toLowerCase().includes('female'));
+                let aiVoice = voices.find(v => (v.name.includes('India') || v.lang.includes('IN') || v.lang.includes('hi-IN')) && (v.name.toLowerCase().includes('male') || v.name.includes('Ravi') || v.name.includes('Rishi')));
+                if(!aiVoice) aiVoice = voices.find(v => v.name.toLowerCase().includes('male'));
+                if(!aiVoice && voices.length > 0) aiVoice = voices[0];
                 
                 if(aiVoice) utterance.voice = aiVoice;
-                utterance.pitch = 1.15; // Melodious high pitch 
-                utterance.rate = 1.0;  // Slower pacing
+                utterance.pitch = 1.0; 
+                utterance.rate = 1.0;  
                 
                 btnListen.style.color = '#1a73e8';
                 utterance.onend = () => { btnListen.style.color = '#444746'; };
@@ -410,6 +400,7 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
 
             if (!e.target.closest('.action-refresh') && !e.target.closest('.redo-dropdown')) {
                 document.querySelectorAll('.redo-dropdown').forEach(el => el.remove());
+                document.querySelectorAll('.bot-actions').forEach(el => el.style.zIndex = '1');
             }
         });
 
@@ -424,7 +415,7 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
             if (container && textarea && !document.getElementById('ca-mic-btn')) {
                 const btn = document.createElement('div');
                 btn.id = 'ca-mic-btn';
-                btn.innerHTML = \\`<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#444746"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>\\`;
+                btn.innerHTML = \`<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#444746"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>\`;
                 btn.style.cssText = 'position: absolute; right: 34px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 99999; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 500%; transition: background-color 0.1s;';
                 container.appendChild(btn);
 
