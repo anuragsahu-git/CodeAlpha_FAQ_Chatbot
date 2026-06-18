@@ -1,4 +1,4 @@
-# 🤖 CodeAlpha FAQ Chatbot
+# CodeAlpha FAQ Chatbot
 
 An intelligent FAQ chatbot developed as part of the CodeAlpha Artificial Intelligence Internship Program. This project uses Natural Language Processing (NLP) techniques to understand user queries and provide the most relevant answers from a predefined FAQ dataset.
 
@@ -6,7 +6,7 @@ The chatbot is designed to improve information retrieval by matching user questi
 
 ---
 
-## 📖 Project Overview
+## Project Overview
 
 Finding accurate information quickly can be challenging when users have repetitive questions. This chatbot addresses that problem by automatically identifying the most relevant FAQ and returning the best possible answer in real time.
 
@@ -14,7 +14,7 @@ The application provides a clean and interactive interface built with Streamlit,
 
 ---
 
-## ✨ Features
+## Features
 
 * NLP-based question understanding
 * FAQ matching using TF-IDF vectorization
@@ -27,7 +27,7 @@ The application provides a clean and interactive interface built with Streamlit,
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 * Python
 * Streamlit
@@ -40,7 +40,7 @@ The application provides a clean and interactive interface built with Streamlit,
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
 1. The user enters a question through text or voice.
 2. The query is cleaned and preprocessed using NLP techniques.
@@ -52,7 +52,7 @@ The application provides a clean and interactive interface built with Streamlit,
 
 ---
 
-## 🏗️ System Workflow
+## System Workflow
 
 ```text
 User Question
@@ -72,7 +72,7 @@ Voice Output (Optional)
 
 ---
 
-## 🚀 Installation
+## Installation
 
 Clone the repository:
 
@@ -100,7 +100,7 @@ streamlit run app.py
 
 ---
 
-## 📸 Application Preview
+## Application Preview
 
 Add screenshots of the chatbot interface here after deployment.
 
@@ -112,13 +112,13 @@ Example:
 
 ---
 
-## 🎯 Internship Objective
+## Internship Objective
 
 The objective of this project is to demonstrate the practical application of Natural Language Processing techniques for building an intelligent FAQ assistant capable of understanding user queries and providing relevant responses efficiently.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Anurag Sahu**
 
@@ -128,6 +128,6 @@ GitHub: https://github.com/anuragsahu-git
 
 ---
 
-## 📄 License
+## License
 
 This project was developed for educational and internship purposes under the CodeAlpha Artificial Intelligence Internship Program.
