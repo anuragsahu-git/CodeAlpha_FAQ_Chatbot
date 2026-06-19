@@ -355,7 +355,7 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
                     } else if(action === 'Shorter') {
                         textSpan.innerText = originalText.split('.')[0] + ".";
                     } else if(action === 'Personalize') {
-                        textSpan.innerText = "Hey Yogesh! " + originalText;
+                        textSpan.innerText = originalText;
                     } else if(action === 'Try again') {
                         textSpan.innerText = "Let me rephrase that: " + originalText;
                     }
