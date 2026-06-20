@@ -34,7 +34,7 @@ FAQ_DATABASE = [
     # --- CORE COMPANY & ASSISTANT IDENTITY ---
     {"question": "What is your name?", "answer": "I am the CodeAlpha AI Assistant, designed to help you with your internship and platform queries.", "tags": "name who are you identity your name called bot chatbot"},
     {"question": "What is CodeAlpha?", "answer": "CodeAlpha is a leading software development company dedicated to driving innovation and excellence across emerging technologies.", "tags": "codealpha about what it does company overview software development"},
-    {"question": "Who is the owner of CodeAlpha?", "answer": "CodeAlpha is a premier software development platform dedicated to providing internship opportunities to students worldwide.", "tags": "owner founder who owns codealpha creator"},
+    {"question": "Who is the owner of CodeAlpha?", "answer": "Mr. Abhay Agnihotri (also known as Abhay Kumar) is the founder and owner of CodeAlpha, an Edtech platform providing virtual internships and global hands-on software development experiences to students.", "tags": "owner founder who owns codealpha creator abhay agnihotri abhay kumar"},
     {"question": "What can you do or who are you?", "answer": "I am the CodeAlpha AI Assistant. I can help you understand the internship overview, guide you through task submissions (Tasks 1 to 4), check verified certificates, and provide instant support for platform queries.", "tags": "what can you do help features list capability skills bot tools"},
     {"question": "What is the official CodeAlpha website?", "answer": "The official CodeAlpha website is www.codealpha.tech.", "tags": "website web link site url official"},
     {"question": "How do I contact support?", "answer": "You can reach CodeAlpha on WhatsApp at +91 9336576683 or email services@codealpha.tech.", "tags": "whatsapp phone number email address contact support help reach message"},
@@ -43,7 +43,7 @@ FAQ_DATABASE = [
     {"question": "What happens if my code has bugs or fails the evaluation?", "answer": "Don't worry! Internships are for learning. If your task has minor issues or bugs, our mentors will provide structural feedback, and you can re-submit the clean version before the final evaluation timeline.", "tags": "bugs fail evaluation error wrong code reject mistake rewrite resubmit correction"},
     {"question": "Can I change my chosen task track after starting?", "answer": "Yes, you are completely free to switch or choose any of the listed tasks (Tasks 1 to 4) depending on your evolving tech interest. Just make sure to submit the minimum required count.", "tags": "change track switch task dynamic choose move domain python java ml"},
     {"question": "What if I miss the deadline due to university exams or medical emergencies?", "answer": "We understand that academic schedules and emergencies happen. You can request a deadline extension by writing a formal mail to services@codealpha.tech along with valid proof.", "tags": "miss deadline exam college university medical emergency sick extend extension delay left"},
-    {"question": "Is prior experience or a high GPA required to pass the internship?", "answer": "No. CodeAlpha values self-driven learning and practical execution over grades. As long as you complete your tasks honestly and follow the presentation guidelines, you will pass smoothly.", "tags": "gpa cgpa marks criteria eligibility basic fresher beginner struggle pass criteria threshold"},
+    {"question": "Is prior experience or a high CGPA required to pass the internship?", "answer": "No. CodeAlpha values self-driven learning and practical execution over grades. As long as you complete your tasks honestly and follow the presentation guidelines, you will pass smoothly.", "tags": "gpa cgpa marks criteria eligibility basic fresher beginner struggle pass criteria threshold"},
     {"question": "How can I display this internship on my resume or LinkedIn to impress recruiters?", "answer": "You can list your role as 'Artificial Intelligence Intern at CodeAlpha'. Highlight your hands-on projects (like Object Detection or Machine Translation Tool), link your GitHub repository, and attach your QR-verified certificate.", "tags": "resume CV profile linkedin share recruiter job hire showcase display portfolio build highlight"},
     {"question": "Does CodeAlpha provide full-time job offers (PPO) based on performance?", "answer": "Yes! Exceptional interns who showcase stellar coding ethics, clean project documentation, and proactive community engagement are fast-tracked into our talent pool for future placement opportunities and full-time job offers (PPO).", "tags": "job full time ppo placement offer career package salary corporate selection hire bonus"},
     {"question": "What criteria are used to write the Letter of Recommendation (LOR)?", "answer": "The Letter of Recommendation (LOR) is awarded to top-performing interns who complete all 4 tasks with outstanding code quality, modular documentation, and excellent video explanations on LinkedIn.", "tags": "lor letter of recommendation quality special merit elite list selection benchmark top intern bonus"},
@@ -82,19 +82,52 @@ corpus = [f"{item['question']} {item['tags']}" for item in FAQ_DATABASE]
 answers = [item['answer'] for item in FAQ_DATABASE]
 
 def build_nlp_model():
-    vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 2))
+    vectorizer = TfidfVectorizer(
+        stop_words='english',
+        ngram_range=(1, 2)
+    )
     faq_vectors = vectorizer.fit_transform(corpus)
     return vectorizer, faq_vectors
 
 vectorizer, faq_vectors = build_nlp_model()
 
+
 def get_best_match(user_query, threshold=0.15):
-    query_vector = vectorizer.transform([user_query])
+
+    import re
+
+    query = user_query.lower().strip()
+
+    # Handle Task Questions
+    task_match = re.search(r"task\s*(\d+)", query)
+
+    if task_match:
+        task_num = int(task_match.group(1))
+
+        if task_num == 1:
+            return "Task 1 is the Language Translation Tool. You must create a UI to enter text, select source and target languages, and display the translated response."
+
+        elif task_num == 2:
+            return "Task 2 is building a Chatbot for FAQs. You need to collect FAQs, preprocess the text, match intents, and display chatbot responses."
+
+        elif task_num == 3:
+            return "Task 3 is Music Generation with AI. You will collect MIDI data, preprocess it, and train a model to generate new music sequences."
+
+        elif task_num == 4:
+            return "Task 4 is Object Detection and Tracking. You must set up real-time video input, detect objects, and apply object tracking."
+
+        else:
+            return "Only Task 1, Task 2, Task 3, and Task 4 are available in the CodeAlpha AI Internship."
+
+    # TF-IDF Matching
+    query_vector = vectorizer.transform([query])
     similarities = cosine_similarity(query_vector, faq_vectors).flatten()
+
     best_match_index = np.argmax(similarities)
-    best_score = similarities[best_match_index]
-    if best_score < threshold:
+
+    if similarities[best_match_index] < threshold:
         return "I apologize, but I couldn't understand your question. Could you please rephrase it? I'll be happy to help you."
+
     return answers[best_match_index]
 
 # ==========================================
@@ -273,7 +306,7 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
                 const btnCopy = e.target.closest('.action-copy-prompt');
                 const cleanText = btnCopy.closest('.user-container').querySelector('.user-bubble').innerText;
                 navigator.clipboard.writeText(cleanText);
-                window.codeAlphaTriggerToast("Prompt copied to clipboard");
+                window.codeAlphaTriggerToast("Prompt Copied successfully! Ready when you are.");
                 return;
             }
 
@@ -293,7 +326,7 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
 
             // FEEDBACK THUMBS
             if (e.target.closest('.action-thumb-up')) {
-                window.codeAlphaTriggerToast("Thank you! Your feedback helps make CodeAlpha better for everyone.");
+                window.codeAlphaTriggerToast("Thank you for your valuable feedback. It helps make CodeAlpha better for our growing community.");
                 return;
             }
             if (e.target.closest('.action-thumb-down')) {
@@ -303,7 +336,7 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
             if (e.target.closest('.close-modal') || e.target.closest('.feedback-option')) {
                 document.getElementById('codealpha-feedback-modal').style.display = 'none';
                 if (e.target.closest('.feedback-option')) {
-                    window.codeAlphaTriggerToast("Thank you! Your feedback helps make CodeAlpha better.");
+                    window.codeAlphaTriggerToast("Thank you for your valuable feedback. It helps make CodeAlpha better for our growing community..");
                 }
                 return;
             }
@@ -345,8 +378,8 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
                     textSpan.setAttribute('data-original', originalText);
                 }
                 
-                textSpan.innerText = "✨ Generating variation...";
-                textSpan.style.opacity = "0.5";
+                textSpan.innerText = "Please wait... I'm carefully generating a premium variation for you.";
+                textSpan.style.opacity = "0.7";
                 
                 setTimeout(() => {
                     textSpan.style.opacity = "1";
@@ -367,7 +400,7 @@ if (!parentDoc.getElementById('codealpha-injected-script')) {
             if (e.target.closest('.action-copy')) {
                 const cleanText = e.target.closest('.bot-container').querySelector('.actual-bot-text').innerText;
                 navigator.clipboard.writeText(cleanText);
-                window.codeAlphaTriggerToast("Copied to clipboard");
+                window.codeAlphaTriggerToast("Copied successfully! Ready when you are.");
                 return;
             }
 
@@ -517,7 +550,7 @@ def render_user_message(text):
 
 with main_container:
     if len(active_chat["messages"]) == 0:
-        st.markdown("<div class='landing-title'>Hi there! I'm CodeAlpha FAQ Assistant.</div>", unsafe_allow_html=True)
+        st.markdown("<div class='landing-title'>Hi there! Welcome to CodeAlpha. I'm your AI FAQ Assistant.</div>", unsafe_allow_html=True)
     else:
         for msg in active_chat["messages"]:
             if msg["role"] == "user":
